@@ -34,7 +34,7 @@ jobs:
     image: node:12
     environment:
       JUMP_HOST: jump-host-world
-      API_REPLICAS: 4
+      API_REPLICAS: 5
     steps:
       - p1: echo $(meta get parameters.p1)
       - p2: echo $(meta get parameters.p2)
