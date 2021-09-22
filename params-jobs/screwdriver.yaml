@@ -34,8 +34,8 @@ jobs:
       - p4: echo $(meta get parameters.p4)
       - p5: echo $(meta get parameters.p5)
       - p6: echo $(meta get parameters.p6)
-      - p6: echo $(meta get parameters.job_param_color)
-      - p6: echo $(meta get parameters.job_param_car)
+      - job_param_color: echo $(meta get parameters.job_param_color)
+      - job_param_car: echo $(meta get parameters.job_param_car)
 
   publish:
     requires: component
@@ -55,5 +55,5 @@ jobs:
       - p4: echo $(meta get parameters.p4)
       - p5: echo $(meta get parameters.p5)
       - p6: echo $(meta get parameters.p6)
-      - p5: echo $(meta get parameters.job_param_color)
-      - p6: echo $(meta get parameters.job_param_music)
+      - job_param_color: echo $(meta get parameters.job_param_color)
+      - job_param_music: echo $(meta get parameters.job_param_music)
