@@ -16,7 +16,7 @@ parameters:
     description: this is a value for p6
 
 jobs:
-  main:
+  component:
     requires: [~pr, ~commit]
     environment:
       JUMP_HOST: jump-host-hello
@@ -38,7 +38,7 @@ jobs:
       - p6: echo $(meta get parameters.job_param_car)
 
   publish:
-    requires: main
+    requires: component
     image: node:12
     environment:
       JUMP_HOST: jump-host-world
