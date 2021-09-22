@@ -22,7 +22,8 @@ jobs:
       JUMP_HOST: jump-host-hello
       API_REPLICAS: 2
     parameters:
-      job_param_color: red
+      job_param_color:
+        value: red
       job_param_car:
         value: [Audi, BMW, Tesla]
         description: car you own
