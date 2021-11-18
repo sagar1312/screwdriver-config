@@ -12,7 +12,7 @@ parameters:
   p4: p4
   p5: p5
   p6:
-    value: [p6a, p6b]
+    value: [p6a, p6b, p6c]
     description: this is a value for p6
 
 jobs:
