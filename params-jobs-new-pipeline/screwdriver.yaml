@@ -1,0 +1,51 @@
+shared:
+  image: node:8
+
+parameters:
+  param_superuser:
+    value: yes
+  param_region: us-east
+  param_sports:
+    value: [ badminton, tennis ]
+    description: favorite sports
+
+jobs:
+  component:
+    requires: [~pr, ~commit]
+    environment:
+      JUMP_HOST: jump-host-hello
+      API_REPLICAS: 2
+    parameters:
+      param_sports:
+        value: [ cricket, basketball ]
+        description: favorite sports
+      param_color:
+        value: red
+      param_car:
+        value: [Audi, BMW, Tesla]
+        description: car you own
+    steps:
+      - param_superuser: echo param_superuser = $(meta get parameters.param_superuser)
+      - param_region: echo param_region = $(meta get parameters.param_region)
+      - param_sports: echo param_sports = $(meta get parameters.param_sports)
+      - param_color: echo param_color = $(meta get parameters.param_color)
+      - param_car: echo param_car = $(meta get parameters.param_car)
+
+  publish:
+    requires: component
+    image: node:12
+    environment:
+      JUMP_HOST: jump-host-world
+      API_REPLICAS: 5
+    parameters:
+      param_region: us-west
+      param_color: white
+      param_music:
+        value: [ Jazz, Rock, Country ]
+        description: favorite music genre
+    steps:
+      - param_superuser: echo param_superuser = $(meta get parameters.param_superuser)
+      - param_region: echo param_region = $(meta get parameters.param_region)
+      - param_sports: echo param_sports = $(meta get parameters.param_sports)
+      - param_color: echo param_color = $(meta get parameters.param_color)
+      - param_car: echo param_car = $(meta get parameters.param_car)
