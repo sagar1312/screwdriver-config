@@ -17,7 +17,7 @@ jobs:
       API_REPLICAS: 2
     parameters:
       param_sports:
-        value: [ cricket, basketball ]
+        value: [ cricket, basketball, baseball ]
         description: favorite sports
       param_color:
         value: red
