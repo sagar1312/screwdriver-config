@@ -30,6 +30,7 @@ jobs:
       - param_sports: echo param_sports = $(meta get parameters.param_sports)
       - param_color: echo param_color = $(meta get parameters.param_color)
       - param_car: echo param_car = $(meta get parameters.param_car)
+      - param_music: echo param_music = $(meta get parameters.param_music)
 
   publish:
     requires: component
@@ -48,4 +49,5 @@ jobs:
       - param_region: echo param_region = $(meta get parameters.param_region)
       - param_sports: echo param_sports = $(meta get parameters.param_sports)
       - param_color: echo param_color = $(meta get parameters.param_color)
+      - param_music: echo param_music = $(meta get parameters.param_music)
       - param_car: echo param_car = $(meta get parameters.param_car)
