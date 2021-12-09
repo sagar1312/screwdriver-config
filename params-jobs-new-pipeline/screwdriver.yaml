@@ -62,3 +62,34 @@ jobs:
       - param_superuser: echo param_superuser = $(meta get parameters.param_superuser)
       - param_region: echo param_region = $(meta get parameters.param_region)
       - param_sports: echo param_sports = $(meta get parameters.param_sports)
+
+  isolated_with_params:
+    image: node:12
+    environment:
+      JUMP_HOST: jump-host-123
+      API_REPLICAS: 5
+    parameters:
+      param_sports:
+        value: [ carrom, hockey ]
+        description: favorite sports
+      param_color:
+        value: black
+      param_airlines:
+        value: [ delta, united, alaska ]
+        description: preferred airlines
+    steps:
+      - param_superuser: echo param_superuser = $(meta get parameters.param_superuser)
+      - param_region: echo param_region = $(meta get parameters.param_region)
+      - param_sports: echo param_sports = $(meta get parameters.param_sports)
+      - param_color: echo param_color = $(meta get parameters.param_color)
+      - param_airlines: echo param_airlines = $(meta get parameters.param_airlines)
+
+  isolated_without_params:
+    image: node:12
+    environment:
+      JUMP_HOST: jump-host-123
+      API_REPLICAS: 5
+    steps:
+      - param_superuser: echo param_superuser = $(meta get parameters.param_superuser)
+      - param_region: echo param_region = $(meta get parameters.param_region)
+      - param_sports: echo param_sports = $(meta get parameters.param_sports)
