@@ -1,5 +1,14 @@
 shared:
   image: node:8
+  annotations:
+    build_details: &build_details >-
+      echo SD_JOB_NAME = $SD_JOB_NAME
+      echo SD_PULL_REQUEST = $SD_PULL_REQUEST
+      echo SD_BUILD_ID = $SD_BUILD_ID
+      echo SD_EVENT_ID = $SD_EVENT_ID
+      echo SD_PARENT_BUILD_ID = $SD_PARENT_BUILD_ID
+      echo SD_PARENT_EVENT_ID = $SD_PARENT_EVENT_ID
+      echo SD_PR_PARENT_JOB_ID = $SD_PR_PARENT_JOB_ID
 
 parameters:
   param_superuser:
@@ -25,6 +34,14 @@ jobs:
         value: [Audi, BMW, Tesla]
         description: car you own
     steps:
+      - build_details:
+          - echo SD_JOB_NAME = $SD_JOB_NAME
+          - echo SD_PULL_REQUEST = $SD_PULL_REQUEST
+          - echo SD_BUILD_ID = $SD_BUILD_ID
+          - echo SD_EVENT_ID = $SD_EVENT_ID
+          - echo SD_PARENT_BUILD_ID = $SD_PARENT_BUILD_ID
+          - echo SD_PARENT_EVENT_ID = $SD_PARENT_EVENT_ID
+          - echo SD_PR_PARENT_JOB_ID = $SD_PR_PARENT_JOB_ID
       - param_superuser: echo param_superuser = $(meta get parameters.param_superuser)
       - param_region: echo param_region = $(meta get parameters.param_region)
       - param_sports: echo param_sports = $(meta get parameters.param_sports)
@@ -45,6 +62,7 @@ jobs:
         value: [ Jazz, Rock, Country ]
         description: favorite music genre
     steps:
+      - build_details: *build_details
       - param_superuser: echo param_superuser = $(meta get parameters.param_superuser)
       - param_region: echo param_region = $(meta get parameters.param_region)
       - param_sports: echo param_sports = $(meta get parameters.param_sports)
