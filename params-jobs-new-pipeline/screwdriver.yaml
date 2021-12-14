@@ -70,7 +70,7 @@ jobs:
       API_REPLICAS: 5
     parameters:
       param_sports:
-        value: [ carrom, hockey ]
+        value: [ carrom, hockey, soccer ]
         description: favorite sports
       param_color:
         value: black
