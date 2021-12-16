@@ -9,6 +9,9 @@ shared:
       echo SD_PARENT_BUILD_ID = $SD_PARENT_BUILD_ID
       echo SD_PARENT_EVENT_ID = $SD_PARENT_EVENT_ID
       echo SD_PR_PARENT_JOB_ID = $SD_PR_PARENT_JOB_ID
+      echo meta.parameters = $(meta get parameters)
+      echo meta.build.jobName = $(meta get build.jobName)
+      echo meta.build = $(meta get build)
 parameters:
   param_superuser:
     value: yes
