@@ -1,5 +1,5 @@
 parameters:
-  music: [country, rock]
+#  music: [country, rock]
   sports:
     value: [ badminton, tennis ]
     description: favorite sports
@@ -9,9 +9,9 @@ jobs:
     image: node:12
     requires: [~pr, ~commit]
     parameters:
-      car:
-        value: [ Audi, BMW, Tesla ]
-        description: favorite car
+#      car:
+#        value: [ Audi, BMW, Tesla ]
+#        description: favorite car
       color:
         value: red
     steps:
