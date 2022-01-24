@@ -1,0 +1,22 @@
+parameters:
+  music: [country, rock]
+  sports:
+    value: [ badminton, tennis ]
+    description: favorite sports
+
+jobs:
+  main:
+    image: node:12
+    requires: [~pr, ~commit]
+    parameters:
+      car:
+        value: [ Audi, BMW, Tesla ]
+        description: favorite car
+      color:
+        value: red
+    steps: |
+      - step_print_template_parameters: |
+          echo music = $(meta get parameters.music)
+          echo sports = $(meta get parameters.sports)
+          echo color = $(meta get parameters.color)
+          echo color = $(meta get parameters.color)
