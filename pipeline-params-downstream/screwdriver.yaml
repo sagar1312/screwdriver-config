@@ -6,8 +6,15 @@ parameters:
   DOWNSTREAM_PARAM_MOVIE: Sci-Fi
 
 jobs:
+  main:
+    requires: [ ~commit ]
+    steps:
+      - step_print_template_parameters: |
+          echo music = $(meta get parameters.DOWNSTREAM_PARAM_MUSIC)
+          echo movie = $(meta get parameters.DOWNSTREAM_PARAM_MOVIE)
+
   triggered_by_upstream:
-    requires: [ ~sd@6:triggers_downstream ]
+    requires: [ main, ~sd@6:triggers_downstream ]
     steps:
       - step_print_template_parameters: |
           echo music = $(meta get parameters.DOWNSTREAM_PARAM_MUSIC)
