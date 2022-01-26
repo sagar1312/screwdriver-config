@@ -1,0 +1,21 @@
+shared:
+  image: node:12
+
+parameters:
+  UPSTREAM_PARAM_COLOR: Red
+  UPSTREAM_PARAM_AUDI: Audi
+
+jobs:
+  main:
+    requires: [ ~pr, ~commit ]
+    steps:
+      - step_print_template_parameters: |
+          echo color = $(meta get parameters.UPSTREAM_PARAM_COLOR)
+          echo car = $(meta get parameters.UPSTREAM_PARAM_AUDI)
+
+  triggers_downstream:
+    requires: main
+    steps:
+      - step_print_template_parameters: |
+          echo color = $(meta get parameters.UPSTREAM_PARAM_COLOR)
+          echo car = $(meta get parameters.UPSTREAM_PARAM_AUDI)
