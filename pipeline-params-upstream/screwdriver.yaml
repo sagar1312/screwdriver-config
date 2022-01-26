@@ -19,3 +19,10 @@ jobs:
       - step_print_template_parameters: |
           echo color = $(meta get parameters.UPSTREAM_PARAM_COLOR)
           echo car = $(meta get parameters.UPSTREAM_PARAM_AUDI)
+
+  post_triggers_downstream:
+    requires: triggers_downstream
+    steps:
+      - step_print_template_parameters: |
+          echo color = $(meta get parameters.UPSTREAM_PARAM_COLOR)
+          echo car = $(meta get parameters.UPSTREAM_PARAM_AUDI)
