@@ -15,6 +15,7 @@ jobs:
       - step_update_meta: |
           meta set RELEASE_TYPE "stable"
           meta set YEAR "2022"
+          meta set parameters.MONTH "Feb"
 
   filler:
     requires: [ triggered_by_upstream ]
