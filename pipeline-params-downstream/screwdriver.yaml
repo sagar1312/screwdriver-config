@@ -16,7 +16,6 @@ jobs:
           echo UPSTREAM_PARAM_COLOR = $(meta get parameters.UPSTREAM_PARAM_COLOR --external "~sd@6:triggers_downstream")
           meta set RELEASE_TYPE "stable"
           meta set YEAR "2022"
-          meta set parameters.MONTH "Feb"
 
   filler:
     requires: [ triggered_by_upstream ]
