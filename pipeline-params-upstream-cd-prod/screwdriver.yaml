@@ -21,8 +21,7 @@ jobs:
           echo car = $(meta get parameters.UPSTREAM_PARAM_AUDI)
 
   triggered_by_downstream_loop:
-    requires: [ triggers_downstream, ~sd@8528:triggers_upstream]
-#    blockedBy: [~sd@8528:filler]
+    requires: [ triggers_downstream, sd@8528:triggers_upstream]
     steps:
       - step_print_template_parameters: |
           echo color = $(meta get parameters.UPSTREAM_PARAM_COLOR)
