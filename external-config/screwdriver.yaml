@@ -18,3 +18,5 @@ jobs:
       - A_SECRET
       - B_SECRET
       - C_SECRET
+    parameters:
+      p3: p3
