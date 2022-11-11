@@ -1,7 +1,7 @@
-#childPipelines:
-#  scmUrls:
-#    - git@github.com:sagar1312/screwdriver-config.git#main:external-config-child-1
-#    - git@github.com:sagar1312/screwdriver-config.git#main:external-config-child-2
+childPipelines:
+  scmUrls:
+    - git@github.com:sagar1312/screwdriver-config.git#main:external-config-child-1
+    - git@github.com:sagar1312/screwdriver-config.git#main:external-config-child-2
 #    - git@github.com:sagar1312/screwdriver-config.git#main:external-config-child-3
 parameters:
   p1: p1
