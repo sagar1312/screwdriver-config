@@ -20,3 +20,4 @@ jobs:
       - C_SECRET
     parameters:
       p3: p3
+      p4: p4
