@@ -1,0 +1,42 @@
+## Stages by grouping
+jobs:
+  jobA:
+    requires: [~pr, ~commit]
+    image: node:14
+    steps:
+      - init: echo 'init'
+  jobB:
+    requires: [jobA]
+    image: node:14
+    steps:
+      - init: echo 'init'
+  jobC:
+    requires: [jobA, jobB]
+    image: node:14
+    steps:
+      - init: echo 'init'
+  jobD:
+    requires: [jobA, jobB, jobC]
+    image: node:14
+    steps:
+      - init: echo 'init'
+  jobE:
+    requires: [jobC]
+    image: node:14
+    steps:
+      - init: echo 'init'
+  jobF:
+    requires: [jobD]
+    image: node:14
+    steps:
+      - init: echo 'init'
+  jobG:
+    requires: [jobF]
+    image: node:14
+    steps:
+      - init: echo 'init'
+
+stages:
+  starfish1122:
+    jobs: [jobA]
+    description: "starfish1122 deploy jobs"
