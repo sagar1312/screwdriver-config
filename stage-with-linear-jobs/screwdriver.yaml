@@ -26,5 +26,5 @@ stages:
     jobs: [ci-deploy, ci-test, ci-certify]
     description: "ci jobs"
   production:
-    jobs: [ ci-deploy, ci-test, ci-certify ]
+    jobs: [ prod-deploy, prod-test, prod-certify ]
     description: "production jobs"
