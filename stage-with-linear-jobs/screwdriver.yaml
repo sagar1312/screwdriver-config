@@ -24,7 +24,7 @@ jobs:
 stages:
   integration:
     jobs: [ci-deploy, ci-test, ci-certify]
-    description: "ci jobs"
+    description: "This stage will deploy the latest application to CI environment and certifies it after the tests are passed."
   production:
     jobs: [ prod-deploy, prod-test, prod-certify ]
-    description: "production jobs"
+    description: "This stage will deploy the CI certified application to production environment and certifies it after the tests are passed."
