@@ -1,0 +1,30 @@
+## Stages by grouping
+shared:
+  image: node:14
+  steps:
+    - init: echo 'init'
+jobs:
+  component:
+    requires: [~pr, ~commit]
+  publish:
+    requires: [ component ]
+  ci-deploy:
+    requires: [ publish ]
+  ci-test:
+    requires: [ ci-deploy ]
+  ci-certify:
+    requires: [ci-test]
+  prod-deploy:
+    requires: [ ci-certify ]
+  prod-test:
+    requires: [ prod-deploy ]
+  prod-certify:
+    requires: [ prod-test ]
+
+stages:
+  integration:
+    jobs: [ci-deploy, ci-test, ci-certify]
+    description: "ci jobs"
+  production:
+    jobs: [ ci-deploy, ci-test, ci-certify ]
+    description: "production jobs"
