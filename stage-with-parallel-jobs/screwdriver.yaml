@@ -13,7 +13,7 @@ jobs:
   ci-test:
     requires: [ ci-deploy ]
   ci-certify:
-    requires: [ci-test]
+    requires: [ ci-test ]
   prod-blue-deploy:
     requires: [ ci-certify ]
   prod-blue-test:
