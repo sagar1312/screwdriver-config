@@ -22,10 +22,10 @@ jobs:
     requires: [ prod-blue-test ]
   prod-green-deploy:
     requires: [ ci-certify ]
-    prod-green-test:
-      requires: [ prod-green-deploy ]
-    prod-green-certify:
-      requires: [ prod-green-test ]
+  prod-green-test:
+    requires: [ prod-green-deploy ]
+  prod-green-certify:
+    requires: [ prod-green-test ]
 
 stages:
   integration:
