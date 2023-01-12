@@ -62,18 +62,18 @@ jobs:
       - init: echo 'init'
 
 stages:
-  starfish:
-    jobs: [job4]
-    description: "starfish deploy jobs"
-  seahorse:
-    jobs: [job30]
-    description: "seahorse starfish satarfish deploy jobs"
-  goldfish:
-    jobs: [job7, job10]
-    description: "goldfish deploy jobs"
+  shark:
+    jobs: [ job1]
+    description: "shark deploy jobs"
   sealion:
-    jobs: [job8, job5]
-    description: "sealion deploy jobs"
+    jobs: [ job5 ]
+    description: "sea lion deploy jobs"
   dolphin:
-    jobs: [job2, job1]
+    jobs: [ job2 ]
     description: "dolphin deploy jobs"
+  goldfish:
+    jobs: [ job6, job10 ]
+    description: "goldfish deploy jobs"
+  starfish:
+    jobs: [job4, job30]
+    description: "starfish deploy jobs"
