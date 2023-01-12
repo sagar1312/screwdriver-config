@@ -68,15 +68,12 @@ stages:
   seahorse:
     jobs: [job30, job4]
     description: "seahorse starfish satarfish deploy jobs"
-    color: '#00FFFF'
   goldfish:
     jobs: [job7, job10]
     description: "goldfish deploy jobs"
-    color: '#ff0000'
   sealion:
     jobs: [job8, job5]
     description: "sealion deploy jobs"
-    color: '#00FFFF'
   dolphin:
     jobs: [job2, job1]
     description: "dolphin deploy jobs"
