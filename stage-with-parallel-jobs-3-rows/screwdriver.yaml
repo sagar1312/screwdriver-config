@@ -63,10 +63,10 @@ jobs:
 
 stages:
   starfish:
-    jobs: [job30, job4]
+    jobs: [job4]
     description: "starfish deploy jobs"
   seahorse:
-    jobs: [job30, job4]
+    jobs: [job30]
     description: "seahorse starfish satarfish deploy jobs"
   goldfish:
     jobs: [job7, job10]
