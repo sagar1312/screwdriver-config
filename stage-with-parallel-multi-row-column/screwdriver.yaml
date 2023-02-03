@@ -1,0 +1,36 @@
+## Stages by grouping
+shared:
+  image: node:14
+  steps:
+    - init: echo 'init'
+jobs:
+  component:
+    requires: [~pr, ~commit]
+  publish:
+    requires: [ component ]
+  ci-deploy:
+    requires: [ publish ]
+  ci-test:
+    requires: [ ci-deploy ]
+  ci-certify:
+    requires: [ ci-test ]
+  prod-blue-deploy:
+    requires: [ ci-certify ]
+  prod-blue-test:
+    requires: [ prod-blue-deploy ]
+  prod-blue-certify:
+    requires: [ prod-blue-test ]
+  prod-green-deploy:
+    requires: [ ci-certify ]
+  prod-green-test:
+    requires: [ prod-green-deploy ]
+  prod-certify:
+    requires: [ prod-green-test, prod-blue-test ]
+
+stages:
+  integration:
+    jobs: [ci-deploy, ci-test, ci-certify]
+    description: "This stage will deploy the latest application to CI environment and certifies it after the tests are passed."
+  production-blue:
+    jobs: [ prod-blue-deploy, prod-blue-test, prod-blue-certify, prod-green-deploy, prod-green-test, prod-green-certify ]
+    description: "This stage will deploy the CI certified application to production environments and certifies it after the tests are passed."
