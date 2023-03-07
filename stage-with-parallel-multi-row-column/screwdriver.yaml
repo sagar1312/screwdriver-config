@@ -31,6 +31,6 @@ stages:
   integration:
     jobs: [ci-deploy, ci-test, ci-certify]
     description: "This stage will deploy the latest application to CI environment and certifies it after the tests are passed."
-  production-blue:
+  production:
     jobs: [ prod-blue-deploy, prod-blue-test, prod-blue-certify, prod-green-deploy, prod-green-test, prod-green-certify ]
     description: "This stage will deploy the CI certified application to production environments and certifies it after the tests are passed."
