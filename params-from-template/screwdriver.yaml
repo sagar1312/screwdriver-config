@@ -1,0 +1,19 @@
+shared:
+  image: node:12
+  settings:
+    email:
+      addresses: [ dsagar@yahooinc.com ]
+      statuses: [ SUCCESS, FAILURE ]
+parameters:
+  music: [jazz, rock]
+
+jobs:
+  default_template_params:
+    requires: [~pr, ~commit]
+    template: dsagar/sd-template-parameters@latest
+
+  override_template_params:
+    requires: default_template_params
+    template: dsagar/sd-template-parameters@latest
+    parameters:
+      color: [ red, blue ]
