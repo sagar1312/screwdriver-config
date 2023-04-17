@@ -10,10 +10,10 @@ parameters:
 jobs:
   default_template_params:
     requires: [~pr, ~commit]
-    template: dsagar/sd-template-parameters@latest
+    template: sagar1312/sd-template-parameters@latest
 
   override_template_params:
     requires: default_template_params
-    template: dsagar/sd-template-parameters@latest
+    template: sagar1312/sd-template-parameters@latest
     parameters:
       color: [ red, blue ]
