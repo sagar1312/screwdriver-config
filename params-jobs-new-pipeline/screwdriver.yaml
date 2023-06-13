@@ -1,5 +1,5 @@
 shared:
-  image: node:8
+  image: node:18
   annotations:
     build_details: &build_details >-
       echo SD_JOB_NAME = $SD_JOB_NAME
@@ -46,7 +46,7 @@ jobs:
 
   publish:
     requires: component
-    image: node:12
+    image: node:18
     environment:
       JUMP_HOST: jump-host-world
       API_REPLICAS: 5
@@ -67,7 +67,7 @@ jobs:
 
   no_params:
     requires: publish
-    image: node:12
+    image: node:18
     environment:
       JUMP_HOST: jump-host-123
       API_REPLICAS: 5
@@ -77,7 +77,7 @@ jobs:
       - param_sports: echo param_sports = $(meta get parameters.param_sports)
 
   isolated_with_params:
-    image: node:12
+    image: node:18
     environment:
       JUMP_HOST: jump-host-123
       API_REPLICAS: 5
@@ -98,7 +98,7 @@ jobs:
       - param_airlines: echo param_airlines = $(meta get parameters.param_airlines)
 
   isolated_without_params:
-    image: node:12
+    image: node:18
     environment:
       JUMP_HOST: jump-host-123
       API_REPLICAS: 5
