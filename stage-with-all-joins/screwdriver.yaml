@@ -35,7 +35,6 @@ jobs:
 stages:
   integration:
     jobs: [ci-deploy, ci-test-functional, ci-test-integration, ci-certify]
-    requires: [~commit]
     description: "This stage will deploy the latest application to CI environment and certifies it after the tests are passed."
   production-blue:
     jobs: [ prod-blue-deploy, prod-blue-test, prod-blue-certify ]
