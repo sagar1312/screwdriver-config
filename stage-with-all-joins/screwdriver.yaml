@@ -1,0 +1,45 @@
+## Stages by joining
+shared:
+  image: node:14
+  steps:
+    - init: echo 'init'
+jobs:
+  component:
+    requires: [~pr, ~commit]
+  publish:
+    requires: [ component ]
+  mockdata-service-deploy:
+    requires: [ publish ]
+  ci-deploy:
+    requires: [ publish ]
+  ci-test-functional:
+    requires: [ ci-deploy, mockdata-service-deploy ]
+  ci-test-integration:
+    requires: [ ci-deploy ]
+  ci-certify:
+    requires: [ ci-test ]
+  prod-blue-deploy:
+    requires: [ ci-certify ]
+  prod-blue-test:
+    requires: [ prod-blue-deploy ]
+  prod-blue-certify:
+    requires: [ prod-blue-test ]
+  prod-green-deploy:
+    requires: [ ci-certify ]
+  prod-green-test:
+    requires: [ prod-green-deploy ]
+  prod-green-certify:
+    requires: [ prod-green-test ]
+  update-cmr:
+    requires: [ prod-blue-certify, prod-green-certify ]
+stages:
+  integration:
+    jobs: [ci-deploy, ci-test-functional, ci-test-integration, ci-certify]
+    requires: [~commit]
+    description: "This stage will deploy the latest application to CI environment and certifies it after the tests are passed."
+  production-blue:
+    jobs: [ prod-blue-deploy, prod-blue-test, prod-blue-certify ]
+    description: "This stage will deploy the CI certified application to production BLUE environment and certifies it after the tests are passed."
+  production-green:
+    jobs: [ prod-green-deploy, prod-green-test, prod-green-certify ]
+    description: "This stage will deploy the CI certified application to production GREEN environment and certifies it after the tests are passed."
