@@ -7,7 +7,7 @@ jobs:
   triggering-stage:
     requires: [ ~pr, ~commit ]
   ci-deploy:
-    requires: [ triggering-stage ]
+    requires: [ ~stage@integration:setup ]
   ci-test:
     requires: [ ci-deploy ]
     steps:
@@ -15,4 +15,10 @@ jobs:
   ci-certify:
     requires: [ ci-test ]
   triggered-by-stage:
-    requires: [ ci-certify ]
+    requires: [ ~stage@integration:teardown ]
+
+stages:
+  integration:
+    requires: [triggering-stage]
+    jobs: [ci-deploy, ci-test, ci-certify]
+    description: "This stage will deploy the latest application to CI environment and certifies it after the tests are passed."
