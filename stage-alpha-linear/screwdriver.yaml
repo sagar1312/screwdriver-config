@@ -1,0 +1,23 @@
+## Stages by grouping
+shared:
+  image: node:14
+  steps:
+    - init: echo 'init'
+jobs:
+  component:
+    requires: [~pr, ~commit]
+  triggering-stage:
+    requires: [ component ]
+  ci-deploy:
+    requires: [ publish ]
+  ci-test:
+    requires: [ ci-deploy ]
+  ci-certify:
+    requires: [ ci-test ]
+  triggered-by-stage:
+    requires: [ ci-certify ]
+
+stages:
+  integration:
+    jobs: [ci-deploy, ci-test, ci-certify]
+    description: "This stage will deploy the latest application to CI environment and certifies it after the tests are passed."

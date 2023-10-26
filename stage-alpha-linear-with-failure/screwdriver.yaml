@@ -1,0 +1,20 @@
+## Stages by grouping
+shared:
+  image: node:14
+  steps:
+    - init: echo 'init'
+jobs:
+  component:
+    requires: [~pr, ~commit]
+  triggering-stage:
+    requires: [ component ]
+  ci-deploy:
+    requires: [ publish ]
+  ci-test:
+    requires: [ ci-deploy ]
+    steps:
+      - fail: exit 1;
+  ci-certify:
+    requires: [ ci-test ]
+  triggered-by-stage:
+    requires: [ ci-certify ]
