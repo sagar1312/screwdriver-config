@@ -7,13 +7,13 @@ jobs:
   triggering-stage:
     requires: [~pr, ~commit]
   ci-deploy:
-    requires: [ ~stage@integration:setup ]
+    requires: [ ~stage@ci:setup ]
   ci-test:
     requires: [ ci-deploy ]
   ci-certify:
     requires: [ ci-test ]
   triggered-by-stage:
-    requires: [ ~stage@integration:teardown ]
+    requires: [ ~stage@ci:teardown ]
 
 stages:
   integration:
