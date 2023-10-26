@@ -4,12 +4,10 @@ shared:
   steps:
     - init: echo 'init'
 jobs:
-  component:
-    requires: [~pr, ~commit]
   triggering-stage:
-    requires: [ component ]
+    requires: [~pr, ~commit]
   ci-deploy:
-    requires: [ publish ]
+    requires: [ triggering-stage ]
   ci-test:
     requires: [ ci-deploy ]
   ci-certify:
