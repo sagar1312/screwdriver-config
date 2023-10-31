@@ -16,7 +16,7 @@ jobs:
     requires: [ ~stage@integration:teardown ]
 
 stages:
-  integration:
+  integration-stage:
     requires: [triggering-stage]
     jobs: [ci-deploy, ci-test, ci-certify]
     description: "This stage will deploy the latest application to CI environment and certifies it after the tests are passed."
