@@ -30,4 +30,12 @@ jobs:
           export REASON="hello world"
           echo $REASON
           echo ${REASON}
-          meta set HELLO "$REASON"
+          meta set cmr_reason "$REASON"
+  set-meta-v5:
+    requires: [ ~commit ]
+    steps:
+      - step_print_template_parameters: |
+          export REASON=55
+          echo $REASON
+          echo ${REASON}
+          meta set cmr_reason $REASON
