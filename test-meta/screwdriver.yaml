@@ -22,4 +22,4 @@ jobs:
     steps:
       - step_print_template_parameters: |
           export REASON = "hello world"
-          meta set cmr_reason $REASON
+          meta set cmr_reason ${REASON}
