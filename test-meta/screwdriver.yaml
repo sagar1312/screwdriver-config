@@ -31,4 +31,3 @@ jobs:
           echo $REASON
           echo ${REASON}
           meta set HELLO "$REASON"
-          meta set cmr_reason $REASON
