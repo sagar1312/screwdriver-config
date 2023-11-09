@@ -23,3 +23,12 @@ jobs:
       - step_print_template_parameters: |
           export REASON="hello world"
           meta set cmr_reason $REASON
+  set-meta-v4:
+    requires: [ ~commit ]
+    steps:
+      - step_print_template_parameters: |
+          export REASON="hello world"
+          echo $REASON
+          echo ${REASON}
+          meta set HELLO "$REASON"
+          meta set cmr_reason $REASON
