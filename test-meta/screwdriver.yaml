@@ -15,3 +15,8 @@ jobs:
     steps:
       - step_print_template_parameters: |
           meta set cmr_reason ${REASON}
+  set-meta-v3:
+    steps:
+      - step_print_template_parameters: |
+          export REASON = "hello world"
+          meta set cmr_reason $REASON
