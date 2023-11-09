@@ -7,15 +7,18 @@ parameters:
 
 jobs:
   set-meta:
+    requires: [ ~commit ]
     steps:
       - step_print_template_parameters: |
           export REASON = "hello world"
           meta set cmr_reason ${REASON}
   set-meta-fail:
+    requires: [ ~commit ]
     steps:
       - step_print_template_parameters: |
           meta set cmr_reason ${REASON}
   set-meta-v3:
+    requires: [ ~commit ]
     steps:
       - step_print_template_parameters: |
           export REASON = "hello world"
