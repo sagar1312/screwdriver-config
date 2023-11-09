@@ -1,0 +1,17 @@
+shared:
+  image: node:12
+
+parameters:
+  DOWNSTREAM_PARAM_MUSIC: Rock
+  DOWNSTREAM_PARAM_MOVIE: Sci-Fi
+
+jobs:
+  set-meta:
+    steps:
+      - step_print_template_parameters: |
+          export REASON = "hello world"
+          meta set cmr_reason ${REASON}
+  set-meta-fail:
+    steps:
+      - step_print_template_parameters: |
+          meta set cmr_reason ${REASON}
