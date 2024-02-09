@@ -9,7 +9,7 @@ jobs:
   publish:
     requires: [ component ]
   ci-deploy:
-    requires: [ stage@ci:setup ]
+    requires: [ stage@integration:setup ]
   ci-test:
     requires: [ ci-deploy ]
   ci-certify:
