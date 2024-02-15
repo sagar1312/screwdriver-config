@@ -26,6 +26,8 @@ jobs:
     requires: [ prod-green-deploy ]
   prod-green-certify:
     requires: [ prod-green-test ]
+  post-release:
+    requires: [ stage@production-green:teardown, stage@production-blue:teardown ]
 
 stages:
   integration:
