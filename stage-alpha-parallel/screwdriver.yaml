@@ -42,3 +42,11 @@ stages:
     jobs: [ prod-green-deploy, prod-green-test, prod-green-certify ]
     requires: [ stage@integration:teardown ]
     description: "This stage will deploy the CI certified application to production GREEN environment and certifies it after the tests are passed."
+    setup:
+      image: node:14
+      steps:
+        - init: echo 'prod setup'
+    teardown:
+      image: node:14
+      steps:
+        - init: echo 'prod teardown'
