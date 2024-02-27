@@ -17,7 +17,7 @@ jobs:
   ci-certify:
     requires: [ci-test]
   prod-deploy:
-    requires: [ stage@production:setup ]
+    requires: [ ]
   prod-test:
     requires: [ prod-deploy ]
   prod-certify:
@@ -30,7 +30,7 @@ stages:
     description: "This stage will deploy the latest application to CI environment and certifies it after the tests are passed."
   production:
     jobs: [ prod-deploy, prod-test, prod-certify ]
-    requires: [ stage@integration:teardown ]
+    requires: [ ~stage@integration ]
     description: "This stage will deploy the CI certified application to production environment and certifies it after the tests are passed."
     setup:
       image: node:14
