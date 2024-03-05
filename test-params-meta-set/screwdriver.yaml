@@ -1,0 +1,21 @@
+shared:
+  image: node:20
+
+parameters:
+  PIPELINE_PARAM_FRUIT: apple
+
+jobs:
+  set-meta-v1:
+    requires: [ ~commit ]
+    steps:
+      - get-param: |
+            echo PIPELINE_PARAM_FRUIT = $(meta get parameters.PIPELINE_PARAM_FRUIT)
+      - set-param: |
+            meta set parameters.PIPELINE_PARAM_FRUIT "pear"
+  set-meta-v2:
+      requires: [ set-meta-v1 ]
+      steps:
+          - get-param: |
+                echo PIPELINE_PARAM_FRUIT = $(meta get parameters.PIPELINE_PARAM_FRUIT)
+          - set-param: |
+                meta set parameters.PIPELINE_PARAM_FRUIT "orange"
