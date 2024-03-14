@@ -4,7 +4,7 @@ version: '1.0.0'
 description: Child Job Template
 maintainer: sagar1312@gmail.com
 config:
-    template: nodejs/sd-job-template-parent@latest
+    template: sagar1312/sd-job-template-parent@latest
     image: node:20
     parameters:
         fruit: [ "child-apple" ]
