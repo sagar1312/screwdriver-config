@@ -1,0 +1,16 @@
+shared:
+    image: node:18
+
+jobs:
+    validate:
+        requires: [~pr, ~commit]
+        steps:
+            - install_prerequisites: npm install screwdriver-template-main
+            - validate_default_template: ./node_modules/.bin/template-validate
+
+    publish:
+        requires: [ validate ]
+        steps:
+            - install_prerequisites: npm install screwdriver-template-main
+            - publish: ./node_modules/.bin/template-publish
+            - autotag: ./node_modules/.bin/template-tag --name sagar1312/sd-job-template-parent --tag latest

@@ -1,0 +1,18 @@
+namespace: sagar1312
+name: sd-job-template-child
+version: '1.0.0'
+description: Child Job Template
+maintainer: sagar1312@gmail.com
+config:
+    template: nodejs/sd-job-template-parent@latest
+    image: node:20
+    parameters:
+        fruit: [ "child-apple" ]
+    order: [print_template_parameters, more_step_in_child_template]
+    steps:
+        - print_template_parameters: |
+              echo 'replacing parent template step'
+              echo fruit = $(meta get parameters.fruit)
+        - more_step_in_child_template: |
+                echo 'adding child template step'
+                echo fruit = $(meta get parameters.fruit)

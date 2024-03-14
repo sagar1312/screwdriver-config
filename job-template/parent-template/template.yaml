@@ -1,0 +1,13 @@
+namespace: sagar1312
+name: sd-job-template-parent
+version: '1.0.0'
+description: Parent Job Template
+maintainer: sagar1312@gmail.com
+config:
+    image: node:18
+    parameters:
+        fruit: [ "parent-apple" ]
+    steps:
+        - step_print_template_parameters: |
+              echo 'parent template'
+              echo fruit = $(meta get parameters.fruit)
