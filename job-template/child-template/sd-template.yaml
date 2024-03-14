@@ -7,7 +7,7 @@ config:
     template: sagar1312/sd-job-template-parent@latest
     image: node:20
     parameters:
-        fruit: [ "child-apple" ]
+        fruit: [ "parent-apple", "child-apple" ]
     order: [print_template_parameters, more_step_in_child_template]
     steps:
         - print_template_parameters: |
