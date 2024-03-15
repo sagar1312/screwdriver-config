@@ -9,7 +9,7 @@ jobs:
     main:
         requires:
             - ~commit
-            - ~sd@?:remote-upstream-trigger
+            - ~sd@13557:remote-upstream-trigger
         steps:
             - meta-before-set: |
                   set -x
