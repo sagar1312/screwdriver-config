@@ -1,0 +1,27 @@
+---
+version: 4
+shared:
+    image: node:20
+    annotations:
+        screwdriver.cd/cpu: LOW
+        screwdriver.cd/ram: LOW
+jobs:
+    remote-upstream-trigger:
+        requires:
+            - ~commit
+        steps:
+            - meta-before-set: |
+                  set -x
+                  meta get img_version
+            - set-meta: |
+                  set -x
+                  if [[ "$(meta get img_version)" -eq "null" ]]; then
+                      meta set img_version "v2.0.0"
+                      meta set label "v2.0.0"
+                  else
+                      echo 'skip setting meta'
+                      echo 'meta is already set $(meta get img_version)'
+                  fi
+            - get-meta: |
+                  set -x
+                  meta get img_version
