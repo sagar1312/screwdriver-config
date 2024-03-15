@@ -15,13 +15,14 @@ jobs:
                   meta get img_version
             - set-meta: |
                   set -x
-                  if [ -z "$(meta get img_version)" ]; then
-                      echo 'setting meta to v2.0.0'
+                  if test -z "$(meta get img_version)"
+                  then
+                      echo "setting meta to v2.0.0"
                       meta set img_version "v2.0.0"
                       meta set label "v2.0.0"
                   else
-                      echo 'skip setting meta'
-                      echo 'meta is already set $(meta get img_version)'
+                      echo "skip setting meta"
+                      echo "meta is already set $(meta get img_version)"
                   fi
             - get-meta: |
                   set -x
