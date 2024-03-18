@@ -7,6 +7,14 @@ config:
     image: node:18
     parameters:
         fruit: [ "parent-apple" ]
+    annotations:
+        screwdriver.cd/blockedBySameJobWaitTime: 5
+    settings:
+        email: [ parent.template@email.com ]
+        slack: 'parentTemplateChannel'
+    environment:
+        ORIGIN: parentTemplate
+        PARENT_TEMPLATE_ENV: "parent template env"
     steps:
         - step_print_template_parameters: |
               echo 'parent template'

@@ -1,0 +1,69 @@
+shared:
+    image: node:22
+    parameters:
+        fruit: [ "parent-apple", "child-apple", "shared-apple" ]
+    annotations:
+        screwdriver.cd/blockedBySameJobWaitTime: 15
+    settings:
+        email: [ parent.template@email.com, child.template@email.com, shared.config@email.com ]
+        slack: 'sharedJobChannel'
+    environment:
+        ORIGIN: sharedConfig
+        SHARED_JOB_ENV: "shared job env"
+    order: [print_template_parameters, more_step_in_child_template]
+    steps:
+        - hello: |
+              echo 'hello'
+        - world: |
+              echo 'world'
+
+jobs:
+    job-using-parent-template-without-override:
+        template: sagar1312/sd-job-template-parent@latest
+        requires: [ ~commit ]
+    job-using-child-template-without-override:
+        template: sagar1312/sd-job-template-child@latest
+        requires: [ job-using-parent-template-without-override ]
+
+    job-using-parent-template-with-override:
+        template: sagar1312/sd-job-template-parent@latest
+        requires: [ ~commit ]
+        annotations:
+            screwdriver.cd/blockedBySameJobWaitTime: 20
+        settings:
+            email: [ parent.template@email.com, child.template@email.com, shared.config@email.com, job.config@email.com ]
+            slack: 'jobChannel'
+        environment:
+            ORIGIN: jobConfig
+            JOB_ENV: "job env"
+    job-using-child-template-with-override:
+        template: sagar1312/sd-job-template-child@latest
+        requires: [ job-using-parent-template-with-override ]
+        annotations:
+            screwdriver.cd/blockedBySameJobWaitTime: 20
+        settings:
+            email: [ parent.template@email.com, child.template@email.com, shared.config@email.com, job.config@email.com ]
+            slack: 'jobChannel'
+        environment:
+            ORIGIN: jobConfig
+            JOB_ENV: "job env"
+
+    job-not-using-template-without-override:
+        requires: [ ~commit ]
+        steps:
+            - fav-color: |
+                echo 'red'
+
+    job-not-using-template-with-override:
+        requires: [ ~commit ]
+        annotations:
+            screwdriver.cd/blockedBySameJobWaitTime: 20
+        settings:
+            email: [ job.config@email.com ]
+            slack: 'jobChannel'
+        environment:
+            ORIGIN: jobConfig
+            JOB_ENV: "job env"
+        steps:
+            - fav-color: |
+                echo 'red'
