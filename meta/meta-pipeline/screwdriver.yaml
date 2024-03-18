@@ -21,9 +21,9 @@ jobs:
             - set-meta: |
                   set -x
                   if [ "$(meta get img_version)" = "null" ]; then
-                      echo "setting meta to $(meta get parameters.CUSTOM_VERSION)"
-                      meta set img_version "$(meta get parameters.CUSTOM_VERSION)"
-                      meta set label "$(meta get parameters.CUSTOM_VERSION)"
+                      echo "setting meta to $(meta get parameters.CUSTOM_VERSION.value)"
+                      meta set img_version "$(meta get parameters.CUSTOM_VERSION.value)"
+                      meta set label "$(meta get parameters.CUSTOM_VERSION.value)"
                   else
                       echo 'skip setting meta'
                       echo 'meta is already set $(meta get img_version)'
