@@ -28,6 +28,7 @@ jobs:
     job-using-parent-template-with-override:
         template: sagar1312/sd-job-template-parent@latest
         requires: [ ~commit ]
+        image: 24
         annotations:
             screwdriver.cd/blockedBySameJobWaitTime: 20
         settings:
@@ -39,6 +40,7 @@ jobs:
     job-using-child-template-with-override:
         template: sagar1312/sd-job-template-child@latest
         requires: [ job-using-parent-template-with-override ]
+        image: 24
         annotations:
             screwdriver.cd/blockedBySameJobWaitTime: 20
         settings:
