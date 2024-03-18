@@ -41,3 +41,13 @@ jobs:
             -   add-more-to-meta: |
                     set -x
                     meta set artifact_version "artifact-$(meta get img_version)"
+    publish-docker:
+        requires:
+            - main
+        steps:
+            -   push-to-docker: |
+                    set -x
+                    echo 'published $(meta get img_version)'
+            -   add-more-to-meta: |
+                    set -x
+                    meta set docker_version "docker-$(meta get img_version)"
