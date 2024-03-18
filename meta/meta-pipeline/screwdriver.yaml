@@ -5,6 +5,10 @@ shared:
     annotations:
         screwdriver.cd/cpu: LOW
         screwdriver.cd/ram: LOW
+
+parameters:
+    CUSTOM_VERSION: "v.0.0.0"
+
 jobs:
     main:
         requires:
@@ -17,9 +21,9 @@ jobs:
             - set-meta: |
                   set -x
                   if [ "$(meta get img_version)" = "null" ]; then
-                      echo 'setting meta to v3.0.0'
-                      meta set img_version "v3.0.0"
-                      meta set label "v3.0.0"
+                      echo "setting meta to $(meta get parameters.CUSTOM_VERSION)"
+                      meta set img_version "$(meta get parameters.CUSTOM_VERSION)"
+                      meta set label "$(meta get parameters.CUSTOM_VERSION)"
                   else
                       echo 'skip setting meta'
                       echo 'meta is already set $(meta get img_version)'
