@@ -16,7 +16,7 @@ jobs:
                   meta get img_version
             - set-meta: |
                   set -x
-                  if [[ -z "$(meta get img_version)" ]]; then
+                  if [ "$(meta get img_version)" = "null" ]; then
                       echo 'setting meta to v3.0.0'
                       meta set img_version "v3.0.0"
                       meta set label "v3.0.0"
