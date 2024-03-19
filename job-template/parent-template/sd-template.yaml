@@ -16,6 +16,6 @@ config:
         ORIGIN: parentTemplate
         PARENT_TEMPLATE_ENV: "parent template env"
     steps:
-        - step_print_template_parameters: |
+        - print_template_parameters: |
               echo 'parent template'
               echo fruit = $(meta get parameters.fruit)

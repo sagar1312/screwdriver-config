@@ -10,7 +10,6 @@ shared:
     environment:
         ORIGIN: sharedConfig
         SHARED_JOB_ENV: "shared job env"
-    order: [print_template_parameters, more_step_in_child_template]
     steps:
         - hello: |
               echo 'hello'
@@ -52,7 +51,7 @@ jobs:
         environment:
             ORIGIN: jobConfig
             JOB_ENV: "job env"
-        order: [print_template_parameters, more_step_in_child_template, hello, world]
+        order: [ print_template_parameters, more_step_in_child_template, hello, world ]
 
     job-not-using-template-without-override:
         requires: [ ~commit ]
@@ -62,15 +61,13 @@ jobs:
         requires: [ ~commit ]
         annotations:
             screwdriver.cd/blockedBySameJobWaitTime: 20
-            screwdriver.cd/mergeSharedSteps: true
         settings:
             email: [ job.config@email.com ]
             slack: 'jobChannel'
         environment:
             ORIGIN: jobConfig
             JOB_ENV: "job env"
-        order: [hello, world, fav-color]
         image: node:23
         steps:
             - fav-color: |
-                echo 'red'
+                  echo 'red'
