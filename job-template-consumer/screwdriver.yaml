@@ -28,44 +28,49 @@ jobs:
     job-using-parent-template-with-override:
         template: sagar1312/sd-job-template-parent@latest
         requires: [ ~commit ]
-        image: 24
+        image: node:23
         annotations:
             screwdriver.cd/blockedBySameJobWaitTime: 20
+            screwdriver.cd/mergeSharedSteps: true
         settings:
             email: [ parent.template@email.com, child.template@email.com, shared.config@email.com, job.config@email.com ]
             slack: 'jobChannel'
         environment:
             ORIGIN: jobConfig
             JOB_ENV: "job env"
+        order: [print_template_parameters, hello, world]
     job-using-child-template-with-override:
         template: sagar1312/sd-job-template-child@latest
         requires: [ job-using-parent-template-with-override ]
-        image: 24
+        image: node:23
         annotations:
             screwdriver.cd/blockedBySameJobWaitTime: 20
+            screwdriver.cd/mergeSharedSteps: true
         settings:
             email: [ parent.template@email.com, child.template@email.com, shared.config@email.com, job.config@email.com ]
             slack: 'jobChannel'
         environment:
             ORIGIN: jobConfig
             JOB_ENV: "job env"
+        order: [print_template_parameters, more_step_in_child_template, hello, world]
 
     job-not-using-template-without-override:
         requires: [ ~commit ]
-        steps:
-            - fav-color: |
-                echo 'red'
+
 
     job-not-using-template-with-override:
         requires: [ ~commit ]
         annotations:
             screwdriver.cd/blockedBySameJobWaitTime: 20
+            screwdriver.cd/mergeSharedSteps: true
         settings:
             email: [ job.config@email.com ]
             slack: 'jobChannel'
         environment:
             ORIGIN: jobConfig
             JOB_ENV: "job env"
+        order: [hello, world, fav-color]
+        image: node:23
         steps:
             - fav-color: |
                 echo 'red'
