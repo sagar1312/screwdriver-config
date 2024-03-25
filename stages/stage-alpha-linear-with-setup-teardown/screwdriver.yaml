@@ -16,6 +16,8 @@ jobs:
         requires: [ ci-deploy ]
     ci-certify:
         requires: [ci-test]
+    post-ci:
+        requires: [ stage@integration ]
 
 stages:
     integration:
