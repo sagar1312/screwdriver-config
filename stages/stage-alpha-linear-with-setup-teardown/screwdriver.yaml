@@ -17,7 +17,7 @@ jobs:
     ci-certify:
         requires: [ci-test]
     post-ci:
-        requires: [ stage@integration ]
+        requires: [ ~stage@integration ]
 
 stages:
     integration:
