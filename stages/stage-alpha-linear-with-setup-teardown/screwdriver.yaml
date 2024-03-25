@@ -1,0 +1,32 @@
+## Stages by grouping
+shared:
+    image: node:14
+    steps:
+        - init: echo 'init'
+jobs:
+    component:
+        requires: [~pr, ~commit]
+        annotations:
+            screwdriver.cd/displayName: compJob
+    publish:
+        requires: [ component ]
+    ci-deploy:
+        requires: [ ]
+    ci-test:
+        requires: [ ci-deploy ]
+    ci-certify:
+        requires: [ci-test]
+
+stages:
+    integration:
+        jobs: [ci-deploy, ci-test, ci-certify]
+        requires: [ publish ]
+        description: "This stage will deploy the latest application to CI environment and certifies it after the tests are passed."
+        setup:
+            image: node:14
+            steps:
+                - init: echo 'integration setup'
+        teardown:
+            image: node:14
+            steps:
+                - init: echo 'integration teardown'
