@@ -9,7 +9,7 @@ jobs:
     non-stage-job-alpha:
         requires: [triggering-stage]
     ci-deploy:
-        requires: [ ~stage@integration ]
+        requires: [ ]
     ci-test-batch-1:
         requires: [ ci-deploy ]
     ci-test-batch-2:
