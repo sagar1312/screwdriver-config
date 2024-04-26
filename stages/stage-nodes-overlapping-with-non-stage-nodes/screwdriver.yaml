@@ -1,0 +1,26 @@
+## Stages by grouping
+shared:
+    image: node:20
+    steps:
+        - init: echo 'init'
+jobs:
+    triggering-stage:
+        requires: [~pr, ~commit]
+    non-stage-job-alpha:
+        requires: [triggering-stage]
+    ci-deploy:
+        requires: [ ~stage@integration:setup ]
+    ci-test-batch-1:
+        requires: [ ci-deploy ]
+    ci-test-batch-2:
+        requires: [ ci-deploy ]
+    ci-certify:
+        requires: [ ci-test-batch-1, ci-test-batch-2 ]
+    triggered-by-stage:
+        requires: [ ~stage@integration:teardown ]
+
+stages:
+    integration:
+        requires: [triggering-stage]
+        jobs: [ci-deploy, ci-test-batch-1, ci-test-batch-2, ci-certify]
+        description: "This stage will deploy the latest application to CI environment and certifies it after the tests are passed."
