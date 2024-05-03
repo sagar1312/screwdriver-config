@@ -6,18 +6,26 @@ shared:
 jobs:
     triggering-stage:
         requires: [~pr, ~commit]
-    non-stage-job-alpha:
+    overlapping-non-stage-job-at-start-1:
         requires: [triggering-stage]
+    overlapping-non-stage-job-at-start-2a:
+        requires: [ overlapping-non-stage-job-at-start-1 ]
+    overlapping-non-stage-job-at-start-2b:
+        requires: [ overlapping-non-stage-job-at-start-1 ]
     ci-deploy:
-        requires: [ ]
+        requires: [ ~stage@integration:setup ]
     ci-test-batch-1:
         requires: [ ci-deploy ]
     ci-test-batch-2:
         requires: [ ci-deploy ]
     ci-certify:
         requires: [ ci-test-batch-1, ci-test-batch-2 ]
+    overlapping-non-stage-job-at-end-1:
+        requires: [ ci-test-batch-1 ]
+    overlapping-non-stage-job-at-end-2:
+        requires: [ ci-test-batch-2 ]
     triggered-by-stage:
-        requires: [ ~stage@integration ]
+        requires: [ ~stage@integration:teardown ]
 
 stages:
     integration:
