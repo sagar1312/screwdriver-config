@@ -13,9 +13,7 @@ jobs:
     overlapping-non-stage-job-at-start-2b:
         requires: [ overlapping-non-stage-job-at-start-1 ]
     ci-deploy:
-        requires: [ ]
-    ci-deploy-detached:
-        requires: [ ]
+        requires: [ ~stage@integration ]
     ci-test-batch-1:
         requires: [ ci-deploy ]
     ci-test-batch-2:
