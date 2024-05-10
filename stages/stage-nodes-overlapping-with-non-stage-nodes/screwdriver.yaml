@@ -27,7 +27,7 @@ jobs:
     overlapping-non-stage-job-at-end-2:
         requires: [ ci-test-batch-2 ]
     triggered-by-stage:
-        requires: [ stage@integration:teardown ]
+        requires: [ stage@integration ]
 
 stages:
     integration:
