@@ -22,3 +22,11 @@ stages:
     requires: [triggering-stage]
     jobs: [ci-deploy, ci-test, ci-certify]
     description: "This stage will deploy the latest application to CI environment and certifies it after the tests are passed."
+    setup:
+      image: node:14
+      steps:
+        -   init: echo 'integration setup'
+    teardown:
+      image: node:14
+      steps:
+        -   init: echo 'integration teardown'
