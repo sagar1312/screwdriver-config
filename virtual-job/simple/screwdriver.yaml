@@ -1,0 +1,26 @@
+shared:
+  image: node:14
+  steps:
+    - init: echo 'init'
+
+jobs:
+  triggering-ci:
+    requires: [ ~pr, ~commit ]
+  ci-setup-virtual:
+    requires: [ ~triggering-ci ]
+    annotations:
+      screwdriver.cd/virtualJob: true
+  ci-deploy:
+    requires: [ ~ci-setup-virtual ]
+  ci-test:
+    requires: [ ci-deploy ]
+    steps:
+      - fail: exit 1;
+  ci-certify:
+    requires: [ ci-test ]
+  ci-teardown-virtual:
+    requires: [ ci-certify ]
+    annotations:
+      screwdriver.cd/virtualJob: true
+  triggered-after-ci:
+    requires: [ ~ci-teardown-virtual ]
