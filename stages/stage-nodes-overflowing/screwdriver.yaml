@@ -1,0 +1,55 @@
+## Stages by grouping
+shared:
+  image: node:14
+  steps:
+    - init: echo 'init'
+
+jobs:
+  component:
+    requires: [~pr, ~commit]
+  publish:
+    requires: [ component ]
+  ci-deploy:
+    requires: [ stage@integration:setup ]
+  ci-test-1:
+    requires: [ ci-deploy ]
+  ci-test-2:
+    requires: [ ci-deploy ]
+  ci-certify:
+    requires: [ ci-test-1, ci-test-2 ]
+  prod-blue-deploy:
+    requires: [ stage@production-blue:setup ]
+  prod-blue-test:
+    requires: [ prod-blue-deploy ]
+  prod-blue-certify:
+    requires: [ prod-blue-test ]
+  prod-green-deploy:
+    requires: [ stage@production-green:setup ]
+  prod-green-test:
+    requires: [ prod-green-deploy ]
+  prod-green-certify:
+    requires: [ prod-green-test ]
+  post-release:
+    requires: [ stage@production-green:teardown, stage@production-blue:teardown ]
+
+stages:
+  integration:
+    jobs: [ci-deploy, ci-test-1, ci-test-2, ci-certify]
+    requires: [ publish ]
+    description: "This stage will deploy the latest application to CI environment and certifies it after the tests are passed."
+  production-blue:
+    jobs: [ prod-blue-deploy, prod-blue-test, prod-blue-certify ]
+    requires: [ stage@integration:teardown ]
+    description: "This stage will deploy the CI certified application to production BLUE environment and certifies it after the tests are passed."
+  production-green:
+    jobs: [ prod-green-deploy, prod-green-test, prod-green-certify ]
+    requires: [ stage@integration:teardown ]
+    description: "This stage will deploy the CI certified application to production GREEN environment and certifies it after the tests are passed."
+    setup:
+      image: node:14
+      steps:
+        - init: echo 'prod setup'
+    teardown:
+      image: node:14
+      steps:
+        - init: echo 'prod teardown'
