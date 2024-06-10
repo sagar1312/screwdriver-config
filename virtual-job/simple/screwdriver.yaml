@@ -14,8 +14,6 @@ jobs:
     requires: [ ~ci-setup-virtual ]
   ci-test:
     requires: [ ci-deploy ]
-    steps:
-      - fail: exit 1;
   ci-certify:
     requires: [ ci-test ]
   ci-teardown-virtual:
