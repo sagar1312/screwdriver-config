@@ -1,0 +1,29 @@
+shared:
+  image: node:20
+  steps:
+    - init: echo 'init'
+
+jobs:
+  triggering-a-stage:
+    requires: [ ~commit, ~pr ]
+  job-a:
+    requires: []
+  job-b:
+    requires: [job-a]
+  job-c:
+    requires: [job-b]
+  triggered-by-a-stage:
+    requires: [~stage@integration]
+
+stages:
+  integration:
+    jobs: [job-a, job-b, job-c]
+    requires: [ triggering-a-stage ]
+    setup:
+      image: node:20
+      steps:
+        - init: echo 'integration setup'
+    teardown:
+      image: node:20
+      steps:
+        - init: echo 'integration teardown'
