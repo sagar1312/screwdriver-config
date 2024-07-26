@@ -1,0 +1,42 @@
+shared:
+    image: node:14
+    steps:
+        - init: echo 'init'
+jobs:
+    component:
+        requires: [~pr, ~commit]
+        description: "Component job"
+    publish:
+        requires: [ component ]
+    ci-deploy:
+        requires: [ ]
+    ci-test:
+        requires: [ ci-deploy ]
+    ci-certify:
+        requires: [ ci-test ]
+    post-ci:
+        requires: [ ~stage@integration ]
+    alpha-deploy:
+        requires: [ ]
+    alpha-test:
+        requires: [ alpha-deploy ]
+    alpha-certify:
+        requires: [ alpha-test ]
+
+stages:
+    integration:
+        jobs: [ci-deploy, ci-test, ci-certify]
+        requires: [ publish ]
+        description: "This stage will deploy the latest application to CI environment and certifies it after the tests are passed."
+        setup:
+            image: node:14
+            steps:
+                - init: echo 'integration setup'
+        teardown:
+            image: node:14
+            steps:
+                - init: echo 'integration teardown'
+    alpha-triggered-by-remote-pipeline:
+        jobs: [alpha-deploy, alpha-test, alpha-certify]
+        requires: [ ~sd@8527:triggers_downstream ]
+        description: "This stage will deploy the latest application to alpha environment and certifies it after the tests are passed."
