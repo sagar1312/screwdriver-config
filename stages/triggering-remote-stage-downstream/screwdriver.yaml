@@ -38,5 +38,5 @@ stages:
                 - init: echo 'integration teardown'
     alpha-triggered-by-remote-pipeline:
         jobs: [alpha-deploy, alpha-test, alpha-certify]
-        requires: [ ~sd@8527:triggers_downstream ]
+        requires: [ ~sd@25:triggers_downstream ]
         description: "This stage will deploy the latest application to alpha environment and certifies it after the tests are passed."
