@@ -17,15 +17,15 @@ jobs:
       - sleep: sleep 30;
       - set-meta: meta set integration-test-status 'FAILED'
       - fail: exit 1;
-  ci-certify:
-    requires: [ ci-test-functional, ci-test-integration ]
+#  ci-certify:
+#    requires: [ ci-test-functional, ci-test-integration ]
   triggered-by-stage:
     requires: [ ~stage@integration:teardown ]
 
 stages:
   integration:
     requires: [triggering-stage]
-    jobs: [ci-deploy, ci-test-functional, ci-test-integration, ci-certify]
+    jobs: [ci-deploy, ci-test-functional, ci-test-integration]
     description: "This stage will deploy the latest application to CI environment and certifies it after the tests are passed."
     setup:
       image: node:14
