@@ -5,13 +5,11 @@ shared:
     - init: echo 'init'
 jobs:
   triggering-stage:
-    requires: [ ~pr, ~commit ]
+    requires: [~pr, ~commit]
   ci-deploy:
     requires: [ ~stage@integration:setup ]
   ci-test:
     requires: [ ci-deploy ]
-    steps:
-      - fail: exit 1;
   ci-certify:
     requires: [ ci-test ]
   triggered-by-stage:
@@ -22,11 +20,7 @@ stages:
     requires: [triggering-stage]
     jobs: [ci-deploy, ci-test, ci-certify]
     description: "This stage will deploy the latest application to CI environment and certifies it after the tests are passed."
-    setup:
-      image: node:14
-      steps:
-        -   init: echo 'integration setup'
-    teardown:
-      image: node:14
-      steps:
-        -   init: echo 'integration teardown'
+#  ci:
+#    requires: [ triggering-stage ]
+#    jobs: [ ci-deploy, ci-test, ci-certify ]
+#    description: "This stage will deploy the latest application to CI environment and certifies it after the tests are passed."
