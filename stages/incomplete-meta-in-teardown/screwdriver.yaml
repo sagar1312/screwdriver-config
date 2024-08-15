@@ -1,37 +1,31 @@
+## Stages by grouping
 shared:
   image: node:14
   steps:
     - init: echo 'init'
 jobs:
   triggering-stage:
-    requires: [~pr, ~commit]
+    requires: [ ~pr, ~commit ]
   ci-deploy:
     requires: [ ~stage@integration:setup ]
-  ci-test-functional:
+  ci-test:
     requires: [ ci-deploy ]
     steps:
-      - set-meta: meta set functional-test-status 'PASSED'
-  ci-test-integration:
-    requires: [ ci-deploy ]
-    steps:
-      - sleep: sleep 30;
-      - set-meta: meta set integration-test-status 'FAILED'
       - fail: exit 1;
   ci-certify:
-    requires: [ ci-test-functional, ci-test-integration ]
+    requires: [ ci-test ]
   triggered-by-stage:
     requires: [ ~stage@integration:teardown ]
 
 stages:
   integration:
     requires: [triggering-stage]
-    jobs: [ci-deploy, ci-test-functional, ci-test-integration, ci-certify]
+    jobs: [ci-deploy, ci-test, ci-certify]
     description: "This stage will deploy the latest application to CI environment and certifies it after the tests are passed."
     setup:
       image: node:14
       steps:
         -   init: echo 'integration setup'
-        -   set-meta: meta set integration-setup 'PASSED'
     teardown:
       image: node:14
       steps:
