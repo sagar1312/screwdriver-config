@@ -26,7 +26,7 @@ stages:
   integration:
     requires: [triggering-stage]
     jobs: [ci-deploy, ci-test-functional, ci-test-integration, ci-certify]
-    description: "This stage will deploy the latest application to CI environment and certifies it after the tests are passed."
+    description: "This stage will deploy the latest application to CI environment and certifies it after all the tests are passed."
     setup:
       image: node:14
       steps:
