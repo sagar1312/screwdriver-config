@@ -10,11 +10,11 @@ jobs:
   ci-test-functional:
     requires: [ ci-deploy ]
     steps:
+      - sleep: sleep 30;
       - set-meta: meta set functional-test-status 'PASSED'
   ci-test-integration:
     requires: [ ci-deploy ]
     steps:
-      - sleep: sleep 30;
       - set-meta: meta set integration-test-status 'FAILED'
       - fail: exit 1;
 #  ci-certify:
