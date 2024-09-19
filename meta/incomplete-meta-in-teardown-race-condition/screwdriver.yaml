@@ -1,0 +1,44 @@
+shared:
+    image: node:20
+    steps:
+        - init: echo 'init'
+jobs:
+    component:
+        requires: [~pr, ~commit]
+    publish:
+        requires: [ component ]
+    ci-deploy:
+        requires: []
+    ci-test:
+        requires: [ ci-deploy ]
+    ci-certify:
+        requires: [ ci-test ]
+    prod-blue-deploy:
+        requires: []
+    prod-blue-test1:
+        requires: []
+        steps:
+            - meta-set: meta set example.prod-blue-test1 91;
+            - fail: exit 1;
+    prod-blue-test2:
+        requires: [ prod-blue-deploy ]
+        steps:
+            - set-meta: meta set example.prod-blue-test2 92;
+    prod-blue-test3:
+        requires: [ prod-blue-deploy ]
+        steps:
+            - set-meta: meta set example.prod-blue-test3 93;
+    prod-blue-test4:
+        requires: [ prod-blue-deploy ]
+        steps:
+            - set-meta: meta set example.prod-blue-test4 94;
+    prod-blue-test5:
+        requires: [ prod-blue-deploy ]
+        steps:
+            - set-meta: meta set example.prod-blue-test5 95;
+    prod-blue-test6:
+        requires: [ prod-blue-deploy ]
+        steps:
+            - set-meta: meta set example.prod-blue-test6 96;
+    prod-blue-certify:
+        requires: [ prod-blue-test1, prod-blue-test2, prod-blue-test3, prod-blue-test4, prod-blue-test5, prod-blue-test6 ]
