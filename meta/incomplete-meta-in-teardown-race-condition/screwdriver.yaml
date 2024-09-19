@@ -8,15 +8,15 @@ jobs:
     publish:
         requires: [ component ]
     ci-deploy:
-        requires: []
+        requires: [ publish ]
     ci-test:
         requires: [ ci-deploy ]
     ci-certify:
         requires: [ ci-test ]
     prod-blue-deploy:
-        requires: []
+        requires: [ ci-certify ]
     prod-blue-test1:
-        requires: []
+        requires: [ ci-certify ]
         steps:
             - meta-set: meta set example.prod-blue-test1 91;
             - fail: exit 1;
