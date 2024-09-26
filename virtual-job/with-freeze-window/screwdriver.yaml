@@ -1,0 +1,28 @@
+shared:
+  image: node:14
+  steps:
+    - init: echo 'init'
+
+jobs:
+  triggering-ci:
+    requires: [ ~pr, ~commit ]
+  ci-setup-virtual:
+#    frozen bw 10 AM to 10 PM
+    freezeWindows: ['* 10-21 ? * *']
+    requires: [ ~triggering-ci ]
+    annotations:
+      screwdriver.cd/virtualJob: true
+  ci-deploy:
+    requires: [ ~ci-setup-virtual ]
+  ci-test:
+    requires: [ ci-deploy ]
+  ci-certify:
+    requires: [ ci-test ]
+  ci-teardown-virtual:
+#    frozen bw 10 PM to 10 AM
+    freezeWindows: ['* 0-9,22-23 ? * *']
+    requires: [ ci-certify ]
+    annotations:
+      screwdriver.cd/virtualJob: true
+  triggered-after-ci:
+    requires: [ ~ci-teardown-virtual ]
