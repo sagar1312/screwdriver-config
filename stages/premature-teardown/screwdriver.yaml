@@ -1,0 +1,23 @@
+shared:
+    image: node:20
+    steps:
+        - test: echo 'test'
+
+stages:
+    sandbox:
+        requires: [ ~commit ]
+        description: Deploy sandbox and test
+        jobs: [ sandbox-deploy, sandbox-e2e-test, sandbox-test ]
+        teardown:
+            steps:
+                - init: echo 'sandbox teardown'
+
+jobs:
+    sandbox-deploy:
+        description: empty
+    sandbox-e2e-test:
+        requires: [ sandbox-deploy ]
+    sandbox-test:
+        requires: [ sandbox-deploy ]
+        steps:
+            - sleep: sleep 60
