@@ -3,6 +3,9 @@ shared:
   steps:
     - init: echo 'init'
 
+annotations:
+  screwdriver.cd/chainPR: true
+
 jobs:
   ci-setup-virtual:
     requires: [ ~pr, ~commit ]
