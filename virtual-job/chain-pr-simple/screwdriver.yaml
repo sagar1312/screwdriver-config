@@ -1,0 +1,15 @@
+shared:
+  image: node:20
+  steps:
+    - init: echo 'init'
+
+annotations:
+  screwdriver.cd/chainPR: true
+
+jobs:
+  ci-setup-virtual:
+    requires: [ ~pr, ~commit ]
+    annotations:
+      screwdriver.cd/virtualJob: true
+  ci-deploy-blue:
+    requires: [ ~ci-setup-virtual ]
