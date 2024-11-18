@@ -1,0 +1,28 @@
+shared:
+  image: node:20
+  steps:
+    - init: echo 'init'
+
+jobs:
+  ci-setup-virtual:
+    requires: [ ~pr, ~commit ]
+    annotations:
+      screwdriver.cd/virtualJob: true
+  ci-deploy-blue:
+    requires: [ ~ci-setup-virtual ]
+  ci-deploy-green:
+    requires: [ ~ci-setup-virtual ]
+  ci-test-blue:
+    requires: [ ci-deploy-blue ]
+  ci-test-green:
+    requires: [ ci-deploy-green ]
+  ci-certify-blue:
+    requires: [ ci-test-blue ]
+  ci-certify-green:
+    requires: [ ci-test-green ]
+  ci-teardown-virtual:
+    requires: [ ci-certify-blue, ci-certify-green ]
+    annotations:
+      screwdriver.cd/virtualJob: true
+  triggered-after-ci:
+    requires: [ ~ci-teardown-virtual ]
