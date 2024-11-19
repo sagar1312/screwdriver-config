@@ -9,7 +9,5 @@ annotations:
 jobs:
   ci-setup-virtual:
     requires: [ ~pr, ~commit ]
-    annotations:
-      screwdriver.cd/virtualJob: true
   ci-deploy-blue:
     requires: [ ~ci-setup-virtual ]
