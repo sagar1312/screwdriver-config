@@ -1,0 +1,54 @@
+shared:
+    image: node:21
+    steps:
+        - init: echo 'init'
+jobs:
+    component:
+        requires: [~pr, ~commit]
+        description: "Component job"
+    publish:
+        requires: [ component ]
+    ci-deploy:
+        requires: [ ]
+    ci-test:
+        #    frozen bw 10 PM to 10 AM
+        freezeWindows: ['* 0-2,13-23 ? * *']
+        requires: [ ci-deploy ]
+    ci-certify:
+        requires: [ ci-test ]
+    post-ci:
+        requires: [ ~stage@integration ]
+    alpha-deploy:
+        requires: [ ]
+    alpha-test:
+        #    frozen bw 10 PM to 10 AM
+        freezeWindows: ['* 0-2,13-23 ? * *']
+        requires: [ alpha-deploy ]
+    alpha-certify:
+        requires: [ alpha-test ]
+    beta-deploy:
+        requires: [ publish ]
+    beta-test:
+        #    frozen bw 10 PM to 10 AM
+        freezeWindows: [ '* 0-2,13-23 ? * *' ]
+        requires: [ beta-deploy ]
+    beta-certify:
+        requires: [ beta-test ]
+
+stages:
+    integration:
+        jobs: [ci-deploy, ci-test, ci-certify]
+        requires: [ publish ]
+        description: "This stage will deploy the latest application to CI environment and certifies it after the tests are passed."
+        setup:
+            image: node:21
+            steps:
+                - init: echo 'integration setup'
+        teardown:
+            image: node:21
+            steps:
+                - init: echo 'integration teardown'
+    alpha:
+        jobs: [ alpha-deploy, alpha-test, alpha-certify ]
+        requires: [ publish ]
+        description: "This stage will deploy the latest application to alpha environment and certifies it after the tests are passed."
