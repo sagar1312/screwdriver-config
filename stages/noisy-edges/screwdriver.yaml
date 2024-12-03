@@ -1,0 +1,64 @@
+## Stages by grouping
+shared:
+  image: node:21
+  steps:
+    - init: echo 'init'
+jobs:
+  component:
+    requires: [~pr, ~commit]
+  publish:
+    requires: [ component ]
+  color-blue-deploy:
+    requires: [ ]
+  color-blue-test:
+    requires: [ color-blue-deploy ]
+  color-green-deploy:
+    requires: [ ]
+  color-green-test:
+    requires: [ color-green-deploy ]
+  color-red-deploy:
+    requires: [ ]
+  color-red-test:
+    requires: [ color-red-deploy ]
+  color-black-deploy:
+    requires: [ ]
+  color-black-test:
+    requires: [ color-black-deploy ]
+  fruit-apple-deploy:
+    requires: [ ]
+  fruit-apple-test:
+    requires: [ fruit-apple-deploy ]
+  fruit-pear-deploy:
+    requires: [ ]
+  fruit-pear-test:
+    requires: [ fruit-pear-deploy ]
+  fruit-strawberry-deploy:
+    requires: [ ]
+  fruit-strawberry-test:
+    requires: [ fruit-strawberry-deploy ]
+  fruit-grapes-deploy:
+    requires: [ ]
+  fruit-grapes-test:
+    requires: [ fruit-grapes-deploy ]
+  triggered-after-fruit-stage:
+    requires: [ stage@fruit ]
+  triggered-after-color-stage:
+    requires: [ stage@color ]
+
+stages:
+  color:
+    requires: [ publish ]
+    jobs: [color-blue-deploy, color-blue-test, color-green-deploy, color-green-test, color-red-deploy, color-red-test, color-black-deploy, color-black-test]
+    description: "This stage will deploy and test the latest application to color environment."
+  fruit:
+    requires: [ publish ]
+    jobs: [ fruit-apple-deploy, fruit-apple-test, fruit-pear-deploy, fruit-pear-test, fruit-strawberry-deploy, fruit-strawberry-test, fruit-grapes-deploy, fruit-grapes-test ]
+    description: "This stage will deploy and test the latest application to fruit environment."
+    setup:
+      image: node:21
+      steps:
+        -   init: echo 'fruit setup'
+    teardown:
+      image: node:21
+      steps:
+        -   init: echo 'fruit teardown'
