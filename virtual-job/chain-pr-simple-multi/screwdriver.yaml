@@ -1,0 +1,33 @@
+shared:
+  image: node:20
+  steps:
+    - init: echo 'init'
+
+annotations:
+  screwdriver.cd/chainPR: true
+
+jobs:
+  red-setup-virtual:
+    requires: [ ~pr, ~commit ]
+    annotations:
+      screwdriver.cd/virtualJob: true
+  red-deploy:
+    requires: [ ~red-setup-virtual ]
+  blue-setup-virtual:
+    requires: [ ~pr, ~commit ]
+    annotations:
+      screwdriver.cd/virtualJob: true
+  blue-deploy:
+    requires: [ ~blue-setup-virtual ]
+  green-setup-virtual:
+    requires: [ ~pr, ~commit ]
+    annotations:
+      screwdriver.cd/virtualJob: true
+  green-deploy:
+    requires: [ ~green-setup-virtual ]
+  yellow-setup-virtual:
+    requires: [ ~pr, ~commit ]
+    annotations:
+      screwdriver.cd/virtualJob: true
+  yellow-deploy:
+    requires: [ ~yellow-setup-virtual ]
