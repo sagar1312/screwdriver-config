@@ -2,6 +2,7 @@ shared:
   image: node:20
   steps:
     - init: echo 'init'
+    - noop: echo 'noop'
 
 annotations:
   screwdriver.cd/chainPR: true
