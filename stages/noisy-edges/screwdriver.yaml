@@ -44,6 +44,8 @@ jobs:
     requires: [ stage@fruit ]
   triggered-after-color-stage:
     requires: [ stage@color ]
+  triggered-by-a-stage-job:
+    requires: [ color-red-deploy ]
 
 stages:
   color:
