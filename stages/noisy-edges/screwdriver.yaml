@@ -24,6 +24,18 @@ jobs:
     requires: [ ]
   color-black-test:
     requires: [ color-black-deploy ]
+  sports-baseball-deploy:
+    requires: [ ]
+  sports-baseball-test:
+    requires: [ sports-baseball-deploy ]
+  sports-baseball-certify:
+    requires: [ sports-baseball-test ]
+  sports-football-deploy:
+    requires: [ ]
+  sports-football-test:
+    requires: [ sports-football-deploy ]
+  sports-football-certify:
+    requires: [ sports-football-test ]
   fruit-apple-deploy:
     requires: [ ]
   fruit-apple-test:
@@ -44,6 +56,8 @@ jobs:
     requires: [ stage@fruit ]
   triggered-after-color-stage:
     requires: [ stage@color ]
+  triggered-after-sports-stage:
+    requires: [ stage@sports ]
   triggered-by-a-stage-job:
     requires: [ color-red-deploy ]
 
@@ -52,6 +66,10 @@ stages:
     requires: [ publish ]
     jobs: [color-blue-deploy, color-blue-test, color-green-deploy, color-green-test, color-red-deploy, color-red-test, color-black-deploy, color-black-test]
     description: "This stage will deploy and test the latest application to color environment."
+  sports:
+    requires: [ stage@color ]
+    jobs: [ sports-baseball-deploy, sports-baseball-test, sports-baseball-certify, sports-football-deploy, sports-football-test, sports-football-certify ]
+    description: "This stage will deploy and test the latest application to sports environment."
   fruit:
     requires: [ publish ]
     jobs: [ fruit-apple-deploy, fruit-apple-test, fruit-pear-deploy, fruit-pear-test, fruit-strawberry-deploy, fruit-strawberry-test, fruit-grapes-deploy, fruit-grapes-test ]
