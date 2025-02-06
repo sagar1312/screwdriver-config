@@ -1,0 +1,88 @@
+version: 4
+
+shared:
+  image: node:21
+  steps:
+    - init: echo 'init'
+
+jobs:
+  pull:
+    requires: [~pr]
+
+  a1:
+    requires: []
+  a2:
+    requires: [a1]
+  a3:
+    requires: [a2]
+  b1:
+    requires: []
+  b2:
+    requires: [b1]
+  c1:
+    requires: []
+
+  d1:
+    requires: [a3, b2]
+  e1:
+    requires: [c1]
+
+  main:
+    requires: [~commit]
+    description: This is my super awesome job that now has a description to show!
+  publish:
+    requires: [main]
+  ci-deploy:
+    requires: []
+  ci-deploy-2:
+    requires: []
+  ci-test:
+    requires: [ci-deploy]
+  ci-certify:
+    requires: [ci-test]
+  prod-blue-deploy:
+    requires: []
+  prod-blue-test:
+    requires: [prod-blue-deploy]
+  prod-blue-certify:
+    requires: [prod-blue-test]
+  prod-green-deploy:
+    requires: []
+  prod-green-test:
+    requires: [prod-green-deploy]
+  prod-green-certify:
+    requires: [prod-green-test]
+  post-release:
+    requires: [~stage@production]
+  t1:
+    requires: []
+  t11:
+    requires: [t1]
+  t21:
+    requires: [t1]
+
+  p1:
+    requires: [~stage@production,~stage@testing]
+
+stages:
+  abc:
+    jobs: [a1, a2, a3, b1, b2, c1]
+    requires: [pull]
+
+  integration:
+    jobs: [ci-deploy,ci-deploy-2,ci-test,ci-certify]
+    requires: [publish]
+    description: "This stage will deploy the latest application to CI environment and certifies it after the tests are passed."
+
+  production:
+    jobs: [prod-blue-deploy,prod-blue-test,prod-blue-certify,prod-green-deploy,prod-green-test,prod-green-certify]
+    requires: [~stage@integration]
+    description: "This stage will deploy the CI certified application to production environments and certifies it after the tests are passed."
+    setup:
+      image: node:21
+    teardown:
+      image: node:21
+
+  testing:
+    jobs: [t1,t11,t21]
+    requires: [~stage@integration]
