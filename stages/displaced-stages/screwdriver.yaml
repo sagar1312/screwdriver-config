@@ -1,0 +1,307 @@
+version: 4
+
+shared:
+    image: node:22
+    steps:
+        - init: echo 'init'
+
+jobs:
+    validate-semgrep:
+        requires: [~pr]
+    tag:
+        requires: [ ~commit ]
+
+
+    build:
+        requires: [ tag ]
+
+    checkov-scan-app:
+        requires: [ tag ]
+
+    publish-docs:
+        requires: [ tag ]
+
+    docker-build:
+        requires: [ build ]
+
+    dev-distribute:
+        requires: [ docker-build ]
+
+    create-cf:
+        requires: [ docker-build ]
+
+    deploy-canary-24-7:
+        requires: [create-cf, dev-distribute, distribute]
+
+    deploy-dev:
+        requires: [create-cf, dev-distribute, distribute]
+
+    int-test:
+        requires: [ deploy-dev ]
+
+    distribute:
+        requires: [ docker-build ]
+
+    schedule-deploy-bucket:
+        requires: [ cmr-complete ]
+
+    get-latest-prod-version-4-update-buckets:
+        requires: [ ~delete-bucket ]
+
+    update-buckets:
+        requires: [ get-latest-prod-version-4-update-buckets ]
+
+    schedule-deploy-canary:
+        requires: [ int-test, deploy-canary-24-7 ]
+
+    kickoff-canary:
+        environment:
+            ACCOUNT: dsp-plus-backend
+            EKS_CONFIG: prod
+            REGION: us-east-1
+            ENVIRONMENT: prod-canary
+
+    # regions are configurable in the common-pipeline.yml
+    # this job will deploy to all 4 regions if no regions are explicitly disabled in the common-pipeline.yml
+    deploy-canary:
+        requires: [ cmr-start-canary ]
+
+    # regions are configurable in the common-pipeline.yml
+    # this job will do nothing if no regions are explicitly enabled in the common-pipeline.yml
+    deploy-validated:
+        requires: [ kpi-canary-ue1, kpi-canary-ew1, kpi-canary-ase1, kpi-canary-uw2, run-kayenta-analysis-ue1, run-kayenta-analysis-uw2, run-kayenta-analysis-ase1, run-kayenta-analysis-ew1 ]
+
+    kpi-canary-ue1:
+        requires: [ deploy-canary ]
+
+    kpi-canary-uw2:
+        requires: [ deploy-canary ]
+
+    kpi-canary-ew1:
+        requires: [ deploy-canary ]
+
+    kpi-canary-ase1:
+        requires: [ deploy-canary ]
+
+    update-canary-rq:
+        requires: [ cmr-complete-canary ]
+
+    schedule-deploy-prod:
+        requires: [~stage@canary]
+
+    kickoff-prod:
+        environment:
+            ACCOUNT: dsp-plus-backend
+
+    deploy-prod-batch-1:
+        requires: [ cmr-start ]
+
+    deploy-prod-batch-2:
+        requires: [ kpi-prod-batch-1-ue1, kpi-prod-batch-1-ew1, kpi-prod-batch-1-ase1, kpi-prod-batch-1-uw2 ]
+
+    deploy-prod-batch-3:
+        requires: [ deploy-prod-batch-2 ]
+
+    deploy-prod-batch-4:
+        requires: [ deploy-prod-batch-3 ]
+
+    deploy-to-prod-baseline:
+        requires: [ kpi-prod-batch-1-ue1, kpi-prod-batch-1-ew1, kpi-prod-batch-1-ase1, kpi-prod-batch-1-uw2 ]
+
+    kpi-prod-batch-1-ue1:
+        requires: [ deploy-prod-batch-1 ]
+
+    kpi-prod-batch-1-uw2:
+        requires: [ deploy-prod-batch-1 ]
+
+    kpi-prod-batch-1-ew1:
+        requires: [ deploy-prod-batch-1 ]
+
+    kpi-prod-batch-1-ase1:
+        requires: [ deploy-prod-batch-1 ]
+
+    update-prod-rq:
+        requires: [ cmr-complete ]
+
+    test-pr:
+        requires: [ ~pr ]
+
+    tag-pr:
+        requires: [ ~pr ]
+
+    build-pr:
+        requires: [ tag-pr ]
+
+    checkov-scan-app-pr:
+        requires: [ tag-pr ]
+
+    parse-pr-yaml:
+        requires: [ build-pr ]
+
+    docker-build-pr:
+        requires: [ parse-pr-yaml ]
+
+    dev-distribute-pr:
+        requires: [ docker-build-pr, create-cf-pr ]
+
+    create-cf-pr:
+        requires: [ parse-pr-yaml ]
+
+    distribute-pr:
+        requires: [ docker-build-pr, create-cf-pr ]
+
+    kickoff-bucket-v2:
+        requires: [ ~distribute-pr, ~schedule-deploy-bucket, ~update-buckets ]
+
+    delete-bucket:
+        environment:
+            ACCOUNT: dsp-plus-backend
+
+    build-docs:
+        requires: [ tag-pr ]
+
+    validate-kayenta-pr:
+        requires: [ ~pr ]
+
+    check-kpi-config:
+        requires: [ tag-pr ]
+
+    cmr-create-approve:
+        # will be the first action triggered in deploy sequence
+        requires: [ kickoff-prod ]
+
+    cmr-start:
+        requires: [cmr-create-approve]
+
+    cmr-complete:
+        requires: [ deploy-prod-batch-4 ]
+
+    cmr-start-release-diff:
+        requires: [ cmr-start ]
+
+    cmr-complete-release-diff:
+        requires: [ cmr-complete ]
+
+    cmr-create-approve-canary:
+        # will be the first action triggered in deploy sequence
+        requires: []
+    cmr-start-canary:
+        requires: [cmr-create-approve-canary]
+    cmr-complete-canary:
+        requires: [ kpi-canary-ue1, kpi-canary-ew1, kpi-canary-ase1, kpi-canary-uw2, run-kayenta-analysis-ue1, run-kayenta-analysis-uw2, run-kayenta-analysis-ase1, run-kayenta-analysis-ew1 ]
+
+    cmr-start-canary-release-diff:
+        requires: [ cmr-start-canary ]
+
+    cmr-complete-canary-release-diff:
+        requires: [ cmr-complete-canary ]
+
+    deploy-alb-ue1:
+        environment:
+            ACCOUNT: dsp-plus-backend
+
+    deploy-alb-uw2:
+        environment:
+            ACCOUNT: dsp-plus-backend
+
+    deploy-alb-ase1:
+        environment:
+            ACCOUNT: dsp-plus-backend
+
+    deploy-alb-ew1:
+        environment:
+            ACCOUNT: dsp-plus-backend
+
+    deploy-keda-ue1:
+        environment:
+            ACCOUNT: dsp-plus-backend
+
+    deploy-keda-uw2:
+        environment:
+            ACCOUNT: dsp-plus-backend
+
+    deploy-keda-ase1:
+        environment:
+            ACCOUNT: dsp-plus-backend
+
+    deploy-keda-ew1:
+        environment:
+            ACCOUNT: dsp-plus-backend
+
+    bucket-manager-ue1-v2:
+        requires: [ kickoff-bucket-v2 ]
+
+    bucket-manager-uw2-v2:
+        requires: [ kickoff-bucket-v2 ]
+
+    bucket-manager-ase1-v2:
+        requires: [ kickoff-bucket-v2 ]
+
+    bucket-manager-ew1-v2:
+        requires: [ kickoff-bucket-v2 ]
+
+    kayenta-bucket-analysis-ue1:
+        requires: [ bucket-manager-ue1-v2 ]
+
+    kayenta-bucket-analysis-uw2:
+        requires: [ bucket-manager-uw2-v2 ]
+
+    kayenta-bucket-analysis-ase1:
+        requires: [ bucket-manager-ase1-v2 ]
+
+    kayenta-bucket-analysis-ew1:
+        requires: [ bucket-manager-ew1-v2 ]
+
+    run-kayenta-analysis-ue1:
+        requires: [ deploy-canary ]
+
+    run-kayenta-analysis-uw2:
+        requires: [ deploy-canary ]
+
+    run-kayenta-analysis-ase1:
+        requires: [ deploy-canary ]
+
+    run-kayenta-analysis-ew1:
+        requires: [ deploy-canary ]
+
+    bucket-manager-dev-ue1:
+        requires: [ dev-distribute-pr ]
+
+    delete-expired-dev-buckets:
+        requires: [~delete-bucket]
+
+    teardown-old-canary-version:
+        environment:
+            ACCOUNT: dsp-plus-backend
+
+stages:
+    canary:
+        requires: [kickoff-canary]
+        jobs:
+            - cmr-create-approve-canary
+            - cmr-start-canary
+            - deploy-canary
+            - kpi-canary-ase1
+            - kpi-canary-ew1
+            - kpi-canary-ue1
+            - kpi-canary-uw2
+            - run-kayenta-analysis-ue1
+            - run-kayenta-analysis-uw2
+            - run-kayenta-analysis-ase1
+            - run-kayenta-analysis-ew1
+            - cmr-complete-canary
+            - update-canary-rq
+
+        teardown:
+            image: docker.ouroath.com:4443/fleks/fleks:main
+            environment:
+                ACCOUNT: dsp-plus-backend
+                REGIONS: us-east-1,us-west-2,eu-west-1,ap-southeast-1
+                EKS_CONFIG: prod
+                FORCE: false
+            steps:
+                - teardown-rq: |
+                      $SD_CONFIG_DIR/scripts/fail-rq-in-stage-teardown.sh
+                - teardown: |
+                      . $SD_CONFIG_DIR/scripts/get-account.sh
+                      $SD_CONFIG_DIR/scripts/teardown-old-canary-version.sh
