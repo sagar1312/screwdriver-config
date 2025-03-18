@@ -1,0 +1,12 @@
+shared:
+    image: node:14
+    steps:
+        - init: echo 'init'
+jobs:
+    component:
+        requires: [~pr, ~commit]
+        description: "Component job"
+    publish:
+        requires: [ component ]
+    triggers_downstream:
+        requires: [ publish ]
