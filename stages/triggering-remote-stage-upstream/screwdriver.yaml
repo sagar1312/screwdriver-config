@@ -1,5 +1,5 @@
 shared:
-    image: node:22
+    image: node:14
     steps:
         - init: echo 'init'
 jobs:
