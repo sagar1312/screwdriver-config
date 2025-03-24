@@ -1,0 +1,52 @@
+version: 4
+shared:
+    image: node:14
+    steps:
+        - build: echo DONE
+annotations:
+    screwdriver.cd/chainPR: true
+
+jobs:
+    main:
+        requires: [~commit]
+    s:
+        requires: []
+
+    s2:
+        requires: []
+
+    d:
+        requires: []
+
+    d2:
+        requires: []
+
+    end:
+        requires: [~stage@single, ~stage@with-setup-and-teardown, ~stage@detached, ~stage@detached-with-setup-and-teardown]
+
+stages:
+    single:
+        jobs: [s]
+        requires: [main]
+
+    with-setup-and-teardown:
+        jobs: [s2]
+        requires: [main]
+        setup:
+            steps:
+                - build: echo 'More done'
+        teardown:
+            steps:
+                - build: echo 'More done'
+
+    detached:
+        jobs: [d]
+
+    detached-with-setup-and-teardown:
+        jobs: [d2]
+        setup:
+            steps:
+                - build: echo 'More done'
+        teardown:
+            steps:
+                - build: echo 'More done'
