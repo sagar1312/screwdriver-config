@@ -1,0 +1,11 @@
+shared:
+    image: node:20
+    annotations:
+        screwdriver.cd/virtualJob: true
+    steps:
+        - init: echo 'init'
+jobs:
+    main:
+        requires: ~commit
+        annotations:
+            screwdriver.cd/buildPeriodically: 0/1 * * * *
