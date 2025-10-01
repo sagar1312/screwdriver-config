@@ -8,4 +8,4 @@ jobs:
     main:
         requires: ~commit
         annotations:
-            screwdriver.cd/buildPeriodically: H(5,10,15,20,25,30,35,40,45,50,55) * * * *
+            screwdriver.cd/buildPeriodically: H * * * *
