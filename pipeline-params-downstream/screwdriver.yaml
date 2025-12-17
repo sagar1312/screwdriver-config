@@ -7,7 +7,7 @@ parameters:
 
 jobs:
   triggered_by_upstream:
-    requires: [ ~pr, ~sd@6:triggers_downstream ]
+    requires: [ ~pr, ~sd@80:triggers_downstream ]
     steps:
       - step_print_template_parameters: |
           echo music = $(meta get parameters.DOWNSTREAM_PARAM_MUSIC)
