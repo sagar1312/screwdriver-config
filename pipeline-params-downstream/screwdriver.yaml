@@ -1,5 +1,5 @@
 shared:
-  image: node:12
+  image: node:22
 
 parameters:
   DOWNSTREAM_PARAM_MUSIC: Rock
